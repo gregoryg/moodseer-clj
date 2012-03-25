@@ -12,16 +12,8 @@ function sendMoodseerCommand(cmd, successCallback, errorCallBack) {
     successCallback = (typeof successCallback == "undefined") ? function() {} : successCallback;
     errorCallback = (typeof errorCallback == "undefined") ? function() {} : errorCallback;
     
-    // $.ajax({
-    // 	url: "http://172.16.17.17/lib/ajaxresults.php",
-    // 	data: "cmd=" + cmd + "&zoneid=1&play_window=10",
-    // 	dataType: "jsonp",
-    // 	success: successCallback,
-    // 	error: errorCallback
-    // 	});
-
-    $.getJSON("http://172.16.17.17/lib/ajaxresults.php?cmd=stop&zoneid=1&play_window=10",
-	      "cmd=" + cmd + "&zoneid=1&play_window=1",
+    $.getJSON("http://172.16.17.17/lib/ajaxresults.php",
+	      "cmd=" + cmd + "&zoneid=1&station=1&play_window=1",
 	      successCallback);
 
 }
