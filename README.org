@@ -8,6 +8,6 @@ A new HTML5 front end to the Moodseer streaming audio server
 
 ** License
 
-Copyright (C) 2011 Dynapse
+Copyright (C) 2012 Dynapse Corp
 
 Distributed under the Eclipse Public License, the same as Clojure.
