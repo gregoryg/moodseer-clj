@@ -1,13 +1,13 @@
-# moodseer-clj
+* Project moodseer-clj
 
 A new HTML5 front end to the Moodseer streaming audio server
 
-## Usage
+** Usage
 
-FIXME: write
+(to write)
 
-## License
+** License
 
-Copyright (C) 2011 FIXME
+Copyright (C) 2011 Dynapse
 
 Distributed under the Eclipse Public License, the same as Clojure.
