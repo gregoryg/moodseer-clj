@@ -1,3 +1,10 @@
+// (temporary) globals
+var moodseer_host = "http://172.16.17.17";
+var moodseer_port = 8000;
+var moodseer_station = 1;
+var moodseer_server_url = moodseer_host + "/lib/ajaxresults.php";
+var moodseer_stream_url = moodseer_host + ":" + moodseer_port + "/stream" + moodseer_station;
+
 function imagerollover() {
     $("img[data-over]", "#playbuttons").mouseover(function() {
 	$(this).attr("src", $(this).attr("data-over"));
@@ -53,5 +60,22 @@ $(document).ready(function() {
 	});
 
     });
+
+    $("div#experimental #getupcoming").click(function() {
+	// get a list of upcoming songs on stream/station 1
+	$.getJSON(moodseer_server_url,
+		  "cmd=upcoming&stationNum=1&station=1&window=10",
+		  function(data, stat) {
+		      console.log("status is " + stat);
+		      console.log(data.upcoming[0].song);
+		      var items = [];
+		      $.each(data.upcoming, function(i, item) {
+		      	  items.push("<li>" + item.song + "</li>")
+		      });
+		      console.log(items);
+		      $("#experimental #upcoming ol.songlist").append(items.join('\n'));
+		  });
+    });
+
 });
     
