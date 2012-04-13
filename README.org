@@ -2,10 +2,18 @@
 
 A new HTML5 front end to the Moodseer streaming audio server
 
+Possibly even a rewrite of the server, with the capability to play music on a particular
+server or in the browser using HTML5
+
 ** Usage
 
 (to write)
 
+** Components / namespaces  
+*** ajax 
+*** core 
+*** db
+*** process
 ** License
 
 Copyright (C) 2012 Dynapse Corp
