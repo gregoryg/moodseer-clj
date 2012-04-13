@@ -4,7 +4,7 @@
         [net.cgrand.enlive-html :as html :only [deftemplate at content set-attr attr? strict-mode]])
   (:require [noir.server :as server])
   (:require [moodseer-clj.ajax])
-  (:require [clj-json.core :as json])
+  (:require [cheshire.core :as json])
   (:import (java.io StringReader BufferedReader)))
 
 (def starting-links [{:desc "Escape to the mothership" :url "http://www.google.com" :important true}
@@ -37,6 +37,8 @@
 (deftemplate zone-player "html/tsplayer.html"
   [& payload]
   )
+
+;; (deftemplate footer "/footer.html" [])
 
 (defpage "/zoneplayer" []
   (zone-player))
