@@ -1,8 +1,6 @@
 (ns moodseer-clj.db
   (:refer-clojure :exclude [replace])
-  (:require [clojure.java.jdbc :as sql])
-  (:require [clj-json.core :as json])
-  (:use [korma.core]))
+  (:require [clojure.java.jdbc :as sql]))
 
 (def db {:classname "com.mysql.jdbc.Driver"
 	 :subprotocol "mysql"
@@ -12,19 +10,6 @@
 
 
 
-(korma.db/defdb moodseer-db {:classname "com.mysql.jdbc.Driver"
-                             :subprotocol "mysql"
-                             :user "gregj"
-                             :password "dbuser"
-                             :subname "//localhost:3306/moodseer"
-                             :delimiters "`"
-                             })
-
-(korma.db/defdb moodseer-db (korma.db/mysql {:host "localhost"
-                                             :delimiters "`"
-                                             :db "moodseer"
-                                             :user "gregj"
-                                             :password "dbuser"}))
 
 
 (def *gort* (sql/with-connection db
