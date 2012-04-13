@@ -1,7 +1,7 @@
 (ns moodseer-clj.ajax
   (:use [net.cgrand.enlive-html :as html])
   (:use [moodseer-clj.db])
-  (:require [clj-json.core :as json]))
+  (:use [cheshire.core :as json]))
 
 (def upcoming-test-list
   {:request-type "upcoming",
@@ -16,4 +16,3 @@
   []
   (json/generate-string upcoming-test-list))
 
-(defn album-track-info
