@@ -1,0 +1,25 @@
+* Doodling
+** Architecture thoughts
+   + The original moodseer was created atop icecast2 - I'd like to eliminate that
+     streaming server layer due to different design goals.  I'm not so interested in
+     supporting 32 zones, but in controlling where the music is played: the user should
+     be able to say I want my music to play on a particular Linux machine or in my web
+     browser.  One problem with the icecast server was that music could not be paused.
+     So I will be adding a pause capability whether playing in browser or remote machine.
+     For a remote, this means having a player that can be controlled over a network
+     interface; this will likely be mplayer in slave mode using named pipes for control.
+     Initial testing has proven out the functionality, though getting player statistics
+     is a bit painful compared to the nice cue file that icecast generates.
+   + The UI will be redone using HTML5, which wasn't available to me 10 years ago.  I
+     want to keep the DOM extremely simple as this is an AJAX app.
+   + Playlists will need to be maintained as a separate component, because my icecast Perl
+     module won't be around to handle it.  I would like to be able to define the source
+     for playlists to be any combination of local storage and streaming sources like
+     {icecast,rdio,mog,grooveshark}.  This means a playlist manager should be aware of
+     which tracks are available now, which have readily available metadata and which
+     require network negotiation to get metadata.  Probably should be using URLs for all
+     tracks so we will have quick filtering of sources
+     #+begin_src 
+     file://mnt/Music/Amazon+MP3/Sarah+Jarosz/Song+Up+In+Her+Head/12+-+Come+On+Up+To+The+House.mp3
+     http://api.rdio.com/whatever/abc.mp3
+     #+end_src
