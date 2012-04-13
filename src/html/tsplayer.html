@@ -18,15 +18,14 @@
       </div>
     </div>
     <div id="playbuttons">
-            <span id="back">
+      <span id="back">
 	<img src="/images/hback.jpg"
 	     data-over="/images/hback_over.jpg"
 	     data-out="/images/hback.jpg" />
       </span>
       <span id="play">
-	<img src="/images/hplay.jpg" 
-	     data-over="/images/hplay_over.jpg"
-	     data-out="/images/hplay.jpg" />
+	<img class="not-paused" src="/images/hplay.jpg" data-over="/images/hplay_over.jpg" data-out="/images/hplay.jpg" />
+	<img class="paused" src="/images/hpaused.jpg" data-over="/images/hpaused_over.jpg" data-out="/images/hpaused.jpg" />
       </span>
       <span id="stop">
 	<img src="/images/hstop.jpg" 
@@ -41,17 +40,22 @@
 
     </div><!-- #playbuttons -->
 
+    <div id="controlbuttons">
+      <span id="mute">
+	<img class="mute-off" src="/images/hmute-off.jpg" data-over="/images/hmute-off_over.jpg" data-out="/images/hmute-off.jpg" />
+	<img class="mute-on"  src="/images/hmute-on.jpg" data-over="/images/hmute-on_over.jpg" data-out="/images/hmute-on.jpg" />
+      </span>
+    </div><!-- #controlbuttons -->
+
     <div id="experimental">
-      <button id="getupcoming" type="button">Get upcoming songs</button>
 
       <div id="upcoming">
 	<ol class="songlist">
 	  <li 
-	</ol>
+	     </ol>
       </div>
 
     </div><!-- #experimental -->
-
 
   </body>
 
