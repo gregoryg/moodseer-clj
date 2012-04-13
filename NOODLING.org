@@ -18,8 +18,11 @@
      {icecast,rdio,mog,grooveshark}.  This means a playlist manager should be aware of
      which tracks are available now, which have readily available metadata and which
      require network negotiation to get metadata.  Probably should be using URLs for all
-     tracks so we will have quick filtering of sources
-     #+begin_src 
-     file://mnt/Music/Amazon+MP3/Sarah+Jarosz/Song+Up+In+Her+Head/12+-+Come+On+Up+To+The+House.mp3
-     http://api.rdio.com/whatever/abc.mp3
-     #+end_src
+     tracks so we will have quick filtering of sources.
+
+     #+begin_example
+       file://mnt/Music/Amazon+MP3/Sarah+Jarosz/Song+Up+In+Her+Head/12+-+Come+On+Up+To+The+House.mp3
+       http://api.rdio.com/whatever/abc.mp3
+     #+end_example
+     + Playlists could be controlled by mplayer for server play
+
