@@ -66,14 +66,12 @@ $(document).ready(function() {
 	$.getJSON(moodseer_server_url,
 		  "cmd=upcoming&stationNum=1&station=1&window=10",
 		  function(data, stat) {
-		      console.log("status is " + stat);
-		      console.log(data.upcoming[0].song);
 		      var items = [];
 		      $.each(data.upcoming, function(i, item) {
 		      	  items.push("<li>" + item.song + "</li>")
 		      });
-		      console.log(items);
-		      $("#experimental #upcoming ol.songlist").append(items.join('\n'));
+		      
+		      $("#experimental #upcoming ol.songlist").empty().append(items.join('\n'));
 		  });
     });
 
