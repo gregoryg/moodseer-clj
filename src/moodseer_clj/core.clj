@@ -1,7 +1,7 @@
 (ns moodseer-clj.core
   (:use [noir.core]
         [hiccup.page]
-        [net.cgrand.enlive-html :as html :only [deftemplate at content set-attr attr? strict-mode]])
+        [net.cgrand.enlive-html :as html :only [deftemplate at content set-attr attr? strict-mode defsnippet]])
   (:require [noir.server :as server])
   (:require [moodseer-clj.ajax])
   (:require [cheshire.core :as json])
@@ -38,7 +38,7 @@
   [& payload]
   )
 
-;; (deftemplate footer "/footer.html" [])
+;; (deftemplate footer "html/footer.html" [& payload])
 
 (defpage "/zoneplayer" []
   (zone-player))
