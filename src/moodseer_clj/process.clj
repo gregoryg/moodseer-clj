@@ -36,6 +36,8 @@
 
 (defn start-player [& playlist]
   (do
+    (mkfifo)
+    (Thread/sleep 200)
     (println (str player-cmd " " (clojure.string/join " " playlist) " 1>/tmp/mplayer-out.log 2>&1 & \n echo $!"))
     (sh "bash" "-c" (str player-cmd " " (first playlist) " 1>/tmp/mplayer-out.log 2>&1 & \n echo $!"))))
 
