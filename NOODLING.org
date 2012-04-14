@@ -1,4 +1,9 @@
 * Doodling
+** Components / namespaces  
+*** ajax 
+*** core 
+*** db
+*** process
 ** Architecture thoughts
    + The original moodseer was created atop icecast2 - I'd like to eliminate that
      streaming server layer due to different design goals.  I'm not so interested in
