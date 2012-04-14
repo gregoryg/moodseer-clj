@@ -68,6 +68,7 @@ $(document).ready(function() {
     $("#controlbuttons #mute img.mute-on").hide();
     $("#playbuttons #play img.paused").hide();
     imagerollover();
+
     $("div#playbuttons #play").click(function() {
 	sendMoodseerCommand("play", function(data, stat) {
 	    populateSongData(data, stat);
@@ -84,6 +85,7 @@ $(document).ready(function() {
     $("div#playbuttons #forward").click(function() {
 	sendMoodseerCommand("next", function(data, stat) {
 	    populateSongData(data, stat);
+	    updateUpcoming();
 	});
 
     });
