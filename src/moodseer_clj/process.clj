@@ -60,7 +60,7 @@
 
 (defn get-player-track-info []
   (let [x (sh "bash" "-c" "echo 'get_meta_artist\nget_meta_title\nget_meta_album\nget_meta_genre\nget_meta_year\nget_meta_track\nget_meta_comment' > /tmp/MYCMD")
-        _ (Thread/sleep 200)
+        _ (Thread/sleep 20)
         y (:out (sh "bash" "-c" "tail -7 /tmp/mplayer-out.log | egrep '^ANS_META' | sed \"s,',,g\""))
         ]
     y))
