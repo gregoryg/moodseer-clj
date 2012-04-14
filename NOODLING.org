@@ -31,3 +31,9 @@
      #+end_example
      + Playlists could be controlled by mplayer for server play
 
+*** Mplayer in slave mode
+    + [2012-04-14 Sat]  Mplayer in slave mode is a drag to use - its interface is via a
+      FIFO, and it is not always responsive.  The output cannot be controlled, so there is
+      much extraneous output, not just the responses to queries.  That said, it is nice to
+      get instant control of a pausable process from the browser, and the AJAX response
+      time is much faster than with moodseer (PHP and MySQL).  
