@@ -38,6 +38,14 @@
       get instant control of a pausable process from the browser, and the AJAX response
       time is much faster than with moodseer (PHP and MySQL).  
 *** Notes for use of mpd and mpc
+**** Metadata returned for playing progress
+defn get-player-progress - return map of player progress, including	
+     :state "playing" or "paused"
+     :playlist-pos current playing song position in active playlist
+     :playlist-count total number of songs in active playlist
+     :time-played time played so far as min:sec
+     :song-length total length of song as min:sec
+     :percent-played percentage played 
 **** mpd config
      #+begin_src shell-script
        music_directory         "/mnt/Music/Music17"
