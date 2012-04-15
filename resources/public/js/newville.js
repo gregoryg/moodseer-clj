@@ -25,7 +25,7 @@ function updateNowplaying() {
 		 function(data, stat) {
 		     $("div#nowplaying .artist").html(data.nowplaying.artist);
 		     $("div#nowplaying .album").html(data.nowplaying.album);
-		     $("div#nowplaying .song").html(data.nowplaying.title);
+		     $("div#nowplaying .song").html(data.nowplaying.song);
 		 });
 }
 
