@@ -37,3 +37,40 @@
       much extraneous output, not just the responses to queries.  That said, it is nice to
       get instant control of a pausable process from the browser, and the AJAX response
       time is much faster than with moodseer (PHP and MySQL).  
+*** Notes for use of mpd and mpc
+**** mpd config
+     #+begin_src shell-script
+       music_directory         "/mnt/Music/Music17"
+       playlist_directory              "~/.mpd/playlists"
+       db_file                 "~/.mpd/mpd.db"
+       log_file                        "~/.mpd/mpd.log"
+       error_file                      "~/.mpd/mpd.error"
+       pid_file                        "/var/run/mpd/pid"
+       state_file                      "/var/lib/mpd/state"
+       user                            "gregj"
+       bind_to_address         "0.0.0.0"
+       port                            "6600"
+       input {
+               plugin "curl"
+       }
+       audio_output {
+               type            "alsa"
+               name            "My ALSA Device"
+               device          "hw:0,0"        # optional
+               format          "44100:16:2"    # optional
+               mixer_device    "default"       # optional
+               mixer_control   "PCM"           # optional
+               mixer_index     "0"             # optional
+       }
+       audio_output {
+               type            "httpd"
+               name            "My HTTP Stream"
+               encoder         "vorbis"                # optional, vorbis or lame
+               port            "8123"
+               bitrate         "128"                   # do not define if quality is defined
+               format          "44100:16:1"
+       }
+       filesystem_charset              "UTF-8"
+       id3v1_encoding                  "UTF-8"
+            
+     #+end_src
