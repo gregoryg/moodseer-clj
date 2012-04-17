@@ -16,11 +16,6 @@
 ;; ORBIT_SOCKETDIR=/tmp/orbit-gregj
 
 
-(def fifo-path "/tmp/MYCMD")
-
-(def player-cmd (str "/usr/bin/mplayer -quiet -slave -input file=" fifo-path " -idle -nocache -nortc"))
-
-
 (defn mplayer-key->keyword [s]
   (->>
    (str/replace s #"(ANS_META_|ANS_)" "")
@@ -37,43 +32,41 @@
    (apply hash-map)
    )))
 
-(defn mkfifo []
-  (let [fifo-path "/tmp/MYCMD"]
-    (do
-      (sh "rm" "-f" fifo-path)
-      (sh "mkfifo" fifo-path))))
-
-
-;; (defn start-player [& playlist]
-;;   (do
-;;     (mkfifo)
-;;     (Thread/sleep 200)
-;;     (println (str player-cmd " " (clojure.string/join " " playlist) " 1>/tmp/mplayer-out.log 2>&1 & \n echo $!"))
-;;     (sh "bash" "-c" (str player-cmd " " (first playlist) " 1>/tmp/mplayer-out.log 2>&1 & \n echo $!"))))
-
-;; (defn pause-player []
-;;   (sh "bash" "-c" (str "echo 'pause' > " fifo-path) ))
-(defn play-player []
+(defn player-play []
   (sh "mpc" "play"))
 
-(defn pause-player []
+(defn player-pause []
   (sh "mpc" "toggle"))
 
 
 
-;; (defn step-player
-;;   ([] (step-player 1))
+;; (defn player-step
+;;   ([] (player-step 1))
 ;;   ([step]
 ;;      (sh "bash" "-c" (str "echo 'pt_step " step "' > " fifo-path))))
 
-(defn next-player []
+(defn player-next []
   (sh "mpc" "next"))
 
-(defn prev-player []
+(defn player-prev []
   (sh "mpc" "prev"))
 
-(defn quit-player []
+(defn player-quit []
   (sh "bash" "-c" (str "echo 'quit' > " fifo-path) ))
+
+(defn player-volume-up 
+  ([] (player-volume-up 5))
+  ([n]
+     (player-set-volume (str "+" n))))
+
+(defn player-volume-down
+  ([] (player-volume-down 5))
+  ([n]
+     (player-set-volume (str "-" n))))
+    
+(defn player-set-volume [n]
+  "Set volume by integer 0-100, or increment (with + or - prefix)"
+  (sh "mpc" "volume" (str n)))
 
 (defn get-player-track-info []
   (let [x (sh "bash" "-c" "echo 'get_meta_artist\nget_meta_title\nget_meta_album\nget_meta_genre\nget_meta_year\nget_meta_track\nget_meta_comment' > /tmp/MYCMD")
@@ -110,6 +103,11 @@
                         (re-seq #"(file|time)=([^\n]+)" x)))
         ]
     zz))
+
+(defn get-player-volume []
+  (first
+   (map #(hash-map (keyword (nth % 1)) (nth % 2))
+        (re-seq #"(volume):\s*([0-9]+)" (:out (sh "mpc" "volume"))))))
 
 (defn get-player-upcoming
   "Get pre-formatted upcoming songs"
