@@ -50,6 +50,8 @@
 ;;       (cheshire.core/generate-string {:status true :message "Hello" :nowplaying resp})
 ;;       (cheshire.core/generate-string {:testresponse {:message "WTF honey" :muted false :command  cmd}}))))
 
+
+
 (defpartial api [params & [content]]
   (let [params (into {} params)
         cmd (:cmd params)
@@ -89,12 +91,12 @@
   )
 
 
-(defpage "/newville" []
-  (newville))
-
 (deftemplate newville "html/newplayer.html" 
   [& payload]
   )
+
+(defpage "/newville" []
+  (newville))
 
 ;; (defpage "/api/upcoming" []
 ;;   (json/generate-string upcoming-test-list))

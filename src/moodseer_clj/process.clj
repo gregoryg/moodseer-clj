@@ -98,7 +98,6 @@
 
 (defn get-player-progress []
   (let [x (:out (sh "mpc" "--format" "file=%file%\ntime=%time%\n"))
-        ;; _ (println x)
         ; pick out components: playlist_pos playlist_count time_played time_length percent_played
         progress-fields [:state :playlist-pos :playlist-count :time-played :song-length :percent-played]
         y  (into {} (map #(hash-map %1 %2)
@@ -107,18 +106,25 @@
                          ))
         z (into y (map #(hash-map (keyword (nth % 1)) (nth % 2))
                        (re-seq #"(volume|repeat|random|single|consume):\s+([^ \n]+)" x)))
+        zz (into z (map #(hash-map (keyword (nth % 1)) (nth % 2))
+                        (re-seq #"(file|time)=([^\n]+)" x)))
         ]
-    z))
+    zz))
 
 (defn get-player-upcoming
   "Get pre-formatted upcoming songs"
-  ([] (get-player-upcoming 10))
-  ([n] (let [x (:out (sh "bash" "-c" (str "mpc playlist | head -" n)))]
+  ([]
+     (get-player-upcoming 10))
+  ([n]
+     (let [pos (+ n (Integer/parseInt (:playlist-pos (get-player-progress))))
+           x (:out (sh "bash" "-c" (str "mpc playlist | head -" pos " | tail -" n)))]
          (str/split x #"\n"))))
 
 (defn get-player-upcoming-paths
   "Get paths to files in upcoming list"
   ([] (get-player-upcoming-paths 10))
-  ([n] (let [x (:out (sh "bash" "-c" (str "mpc listall | head -" n)))]
+  ([n]
+     (let [pos (+ n (Integer/parseInt (:playlist-pos (get-player-progress))))
+           x (:out (sh "bash" "-c" (str "mpc listall | head -" pos " | tail -" n)))]
          x)))
   
