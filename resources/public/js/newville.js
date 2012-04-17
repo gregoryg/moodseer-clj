@@ -29,6 +29,20 @@ function updateNowplaying() {
 		 });
 }
 
+function populateUpcoming(data, str) {
+    var items = [];
+    $.each(data.upcoming.songlist, function(i, item) {
+	items.push("<li>" + item + "</li>");
+    });
+    $("div#upcoming ol.songlist").empty().append(items.join('\n'));
+}
+
+function updateUpcoming() {
+    $.getJSON(moodseer_api_url,
+	      "cmd=upcoming",
+	      populateUpcoming);
+}
+
 $(document).ready(function() {
     $("#controlbuttons #mute img.mute-on").hide();
     $("#playbuttons #play img.paused").hide();
@@ -48,16 +62,22 @@ $(document).ready(function() {
     
     $("div#playbuttons #forward").click(function() {
 	sendMoodseer("next", function(data, stat) {
-	    setTimeout(updateNowplaying, 1000);
+	    updateNowplaying();
+	    updateUpcoming();
+	    // setTimeout(updateNowplaying, 1000);
 	});
     });
     
     $("div#playbuttons #back").click(function() {
 	sendMoodseer("prev", function(data, stat) {
-	    setTimeout(updateNowplaying, 1000);
+	    updateNowplaying();
+	    updateUpcoming();
+
+	    // setTimeout(updateNowplaying, 1000);
 	});
     });
 
     updateNowplaying();
+    updateUpcoming();
     setInterval(function() { updateNowplaying()}, 10000);
 });
