@@ -37,6 +37,15 @@ function populateUpcoming(data, str) {
     $("div#upcoming ol.songlist").empty().append(items.join('\n'));
 }
 
+function updateVolume() {
+    $.getJSON(moodseer_api_url,
+	      "cmd=volume",
+	      function(data, stat) {
+		  $("#volume").text(data.volume);
+		  console.log(data);
+	      });
+}
+
 function updateUpcoming() {
     $.getJSON(moodseer_api_url,
 	      "cmd=upcoming",
@@ -77,7 +86,17 @@ $(document).ready(function() {
 	});
     });
 
-    updateNowplaying();
-    updateUpcoming();
-    setInterval(function() { updateNowplaying()}, 10000);
+    $("div#controlbuttons #volume-up").click(function() {
+	sendMoodseer("louder", function(data, stat) {
+	    updateVolume();
+	});
+	
+    });
+
+    $("div#controlbuttons #volume-down").click(function() {
+	sendMoodseer("softer", function(data, stat) {
+	    updateVolume();
+	});
+	
+    });
 });

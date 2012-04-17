@@ -34,41 +34,27 @@
     [:div#wrapper
     content]]))
 
-;; (defpartial api [params & [content]]
-;;   (let [params (into {} params)
-;;         cmd (:cmd params)
-;;         resp
-;;         (cond
-;;           (= "play" cmd) (moodseer-clj.process/start-player "-shuffle -playlist /home/gregj/work/all.m3u")
-;;           (= "pause" cmd) (moodseer-clj.process/pause-player)
-;;           (= "stop" cmd) (moodseer-clj.process/pause-player)
-;;           (= "next" cmd) (moodseer-clj.process/next-player)
-;;           (= "prev" cmd) (moodseer-clj.process/prev-player)
-;;           (= "quit" cmd) (moodseer-clj.process/quit-player)
-;;           (= "nowplaying" cmd) (moodseer-clj.process/mplayer-pairs->map (moodseer-clj.process/get-player-track-info)))]
-;;     (if (= "nowplaying" cmd)
-;;       (cheshire.core/generate-string {:status true :message "Hello" :nowplaying resp})
-;;       (cheshire.core/generate-string {:testresponse {:message "WTF honey" :muted false :command  cmd}}))))
-
-
-
 (defpartial api [params & [content]]
   (let [params (into {} params)
         cmd (:cmd params)
         resp
         (cond
-          (= "play" cmd) (moodseer-clj.process/play-player)
-          (= "pause" cmd) (moodseer-clj.process/pause-player)
-          (= "stop" cmd) (moodseer-clj.process/pause-player)
-          (= "next" cmd) (moodseer-clj.process/next-player)
-          (= "prev" cmd) (moodseer-clj.process/prev-player)
+          (= "play" cmd) (moodseer-clj.process/player-play)
+          (= "pause" cmd) (moodseer-clj.process/player-pause)
+          (= "stop" cmd) (moodseer-clj.process/player-pause)
+          (= "next" cmd) (moodseer-clj.process/player-next)
+          (= "prev" cmd) (moodseer-clj.process/player-prev)
           (= "quit" cmd) nil
+          (= "volume" cmd) (moodseer-clj.process/get-player-volume)
+          (= "louder" cmd) (moodseer-clj.process/player-volume-up)
+          (= "softer" cmd) (moodseer-clj.process/player-volume-down)
           (= "nowplaying" cmd) (moodseer-clj.process/player-nowplaying)
           (= "upcoming"   cmd) (moodseer-clj.process/get-player-upcoming))
         ]
     (cond
       (= "nowplaying" cmd) (cheshire.core/generate-string {:status true :message "Hello" :nowplaying resp})
       (= "upcoming" cmd) (cheshire.core/generate-string {:status true :message "Hello" :upcoming {:songlist resp}})
+      (= "volume" cmd) (cheshire.core/generate-string {:status true :volume (:volume resp)})
       true      (cheshire.core/generate-string {:testresponse {:message "WTF honey" :muted false :command  cmd}}))))
 
 (defpage "/api:cmd" {:as params}
