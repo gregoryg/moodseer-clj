@@ -66,7 +66,7 @@ $(document).ready(function() {
     });
 
     $("div#playbuttons #stop").click(function() {
-	sendMoodseer("pause")
+	sendMoodseer("stop")
     });
     
     $("div#playbuttons #forward").click(function() {
@@ -99,4 +99,9 @@ $(document).ready(function() {
 	});
 	
     });
+
+    $("div#controlbuttons #pause").click(function() {
+	sendMoodseer("pause");
+    });
+	
 });

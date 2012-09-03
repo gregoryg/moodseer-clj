@@ -38,6 +38,8 @@
 (defn player-pause []
   (sh "mpc" "toggle"))
 
+(defn player-stop []
+  (sh "mpc" "stop"))
 
 
 ;; (defn player-step
@@ -51,8 +53,9 @@
 (defn player-prev []
   (sh "mpc" "prev"))
 
-(defn player-quit []
-  (sh "bash" "-c" (str "echo 'quit' > " fifo-path) ))
+(defn player-set-volume [n]
+  "Set volume by integer 0-100, or increment (with + or - prefix)"
+  (sh "mpc" "volume" (str n)))
 
 (defn player-volume-up 
   ([] (player-volume-up 5))
@@ -64,10 +67,6 @@
   ([n]
      (player-set-volume (str "-" n))))
     
-(defn player-set-volume [n]
-  "Set volume by integer 0-100, or increment (with + or - prefix)"
-  (sh "mpc" "volume" (str n)))
-
 (defn get-player-track-info []
   (let [x (sh "bash" "-c" "echo 'get_meta_artist\nget_meta_title\nget_meta_album\nget_meta_genre\nget_meta_year\nget_meta_track\nget_meta_comment' > /tmp/MYCMD")
         ;; _ (Thread/sleep 20)
@@ -99,8 +98,10 @@
                          ))
         z (into y (map #(hash-map (keyword (nth % 1)) (nth % 2))
                        (re-seq #"(volume|repeat|random|single|consume):\s+([^ \n]+)" x)))
-        zz (into z (map #(hash-map (keyword (nth % 1)) (nth % 2))
-                        (re-seq #"(file|time)=([^\n]+)" x)))
+        zz (conj
+            (into z (map #(hash-map (keyword (nth % 1)) (nth % 2))
+                         (re-seq #"(file|time)=([^\n]+)" x)))
+            {:paused (= (:state z) "paused")})
         ]
     zz))
 

@@ -41,7 +41,7 @@
         (cond
           (= "play" cmd) (moodseer-clj.process/player-play)
           (= "pause" cmd) (moodseer-clj.process/player-pause)
-          (= "stop" cmd) (moodseer-clj.process/player-pause)
+          (= "stop" cmd) (moodseer-clj.process/player-stop)
           (= "next" cmd) (moodseer-clj.process/player-next)
           (= "prev" cmd) (moodseer-clj.process/player-prev)
           (= "quit" cmd) nil
@@ -57,8 +57,11 @@
       (= "volume" cmd) (cheshire.core/generate-string {:status true :volume (:volume resp)})
       true      (cheshire.core/generate-string {:testresponse {:message "WTF honey" :muted false :command  cmd}}))))
 
-(defpage "/api:cmd" {:as params}
+(defpage [:get "/api"] params
   (api params))
+
+;; (defpage "/api:cmd" {:as params}
+;;   (api params))
 
 (deftemplate zone-player "html/tsplayer.html"
   [& payload]
