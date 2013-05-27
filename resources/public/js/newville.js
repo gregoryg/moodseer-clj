@@ -1,4 +1,4 @@
-var moodseer_api_url = "http://localhost:8080/api";
+var moodseer_api_url = "http://smeagol:8080/api";
 
 
 function imagerollover() {
@@ -62,7 +62,10 @@ $(document).ready(function() {
     });
 
     $("div#playbuttons #play").click(function() {
-	sendMoodseer("play")
+	sendMoodseer("play", function(data, stat) {
+	    updateNowplaying();
+	    updateUpcoming();
+	});
     });
 
     $("div#playbuttons #stop").click(function() {
