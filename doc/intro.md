@@ -1,3 +1,3 @@
-# Introduction to moodseer
+# Introduction to moodseer-clj
 
-TODO: write [great documentation](http://jacobian.org/writing/great-documentation/what-to-write/)
+TODO: write [great documentation](http://jacobian.org/writing/what-to-write/)
