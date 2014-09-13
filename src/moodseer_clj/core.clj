@@ -1,6 +1,7 @@
 (ns moodseer-clj.core
   (:use compojure.core
         ring.middleware.json
+        ring.middleware.file
         ;; [ring.middleware.multipart-params]
         selmer.parser
         )
@@ -18,6 +19,7 @@
 ;;   (GET "/" [] "Hello World"))
 (defroutes app
   (GET "/gort" req {:this "this" :that "other"})
+  (GET "/webpage" req (selmer.parser/render-file "newplayer.html" {}))
   (GET "/" req "Do something with req")
   (GET "/player" req (render-file "player.html" {:moodseer-title "Moodseer New Horizons" :moodseer-announce "THIS IS MY H1"}))
   (GET ["/file/:name.:ext" :name #".*", :ext #".*"] [name ext]
@@ -69,6 +71,7 @@
 ;; hendler
 (def handler
   (-> app
+      (wrap-file "resources")
       wrap-keyword-params
       wrap-nested-params
       wrap-params
