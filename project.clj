@@ -15,4 +15,10 @@
                  ;; [ring/ring-core "1.3.0"]
                  [http-kit "2.1.16"]
                  ]
-)
+  :plugins   [[lein-ring "0.8.11"]]
+  :dev-dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.2.0"]]
+  :profiles {
+             :dev {:dependencies [[ring/ring-devel "1.3.0"]
+                                  [ring-mock "0.1.5"]]}
+             }
+  )
