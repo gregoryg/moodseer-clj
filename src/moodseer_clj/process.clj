@@ -2,6 +2,7 @@
   (:use [clojure.java.shell :only [sh]])
   (:use [clojure.string :only [split join]])
   (:require [clojure.string :as str]))
+
 (def zones [{:id 2 :desc "Old laptop"  :host "172.16.17.101"   :port 6600 :moodseer-key nil},
             {:id 0 :desc "Living Room" :host "molly.magichome" :port 6600 :moodseer-key "/home/gregj/.ssh/moodseer-molly_dsa"},
             {:id 1 :desc "Master Bedroom" :host "moodspot1.magichome" :port 6700 :moodseer-key nil}])

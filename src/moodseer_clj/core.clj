@@ -22,37 +22,50 @@
   (GET "/webpage" req (selmer.parser/render-file "newplayer.html" {}))
   (GET "/" req "Do something with req")
   (GET "/player" req (render-file "player.html" {:moodseer-title "Moodseer New Horizons" :moodseer-announce "THIS IS MY H1"}))
-  (GET ["/file/:name.:ext" :name #".*", :ext #".*"] [name ext]
-       (str "File: " name ", extenstion " ext))
-  (GET "/posts" {params :params}
-       (str "Title is " (:title params) ", author is " (:author params))
-       )
-  ;; (str "Do something with " title " and " author)))
-  (GET "/math" req
-       ;; (get params :a) ;; 1
-       ;; (str "a=" (:a (:params req)) ", b=" (:b (:params req)))
-       (pr-str req)
-       )
-  (GET "/play/:track" [track]
-       (str "Play API: track is "track)
-       )
+  (GET ["/api/:cmd"] [cmd]
+       (ring.util.response/response
+       (let [resp 
+             (cond (= "play" cmd)
+                   (moodseer.process/player-play)
+                   (= "stop" cmd)
+                   (moodseer.process/player-stop)
+                   (= "pause" cmd)
+                   (moodseer.process/player-pause)
+                   (= "upcoming" cmd)
+                   (moodseer.process/get-player-upcoming)
+                   )]
+         {:testresponse {:message "WTF honey" :muted false :command cmd :response resp}})))
+         (GET ["/file/:name.:ext" :name #".*", :ext #".*"] [name ext]
+              (str "File: " name ", extention " ext))
+         (GET "/posts" {params :params}
+              (str "Title is " (:title params) ", author is " (:author params))
+              )
+         ;; (str "Do something with " title " and " author)))
+         (GET "/math" req
+              ;; (get params :a) ;; 1
+              ;; (str "a=" (:a (:params req)) ", b=" (:b (:params req)))
+              (pr-str req)
+              )
+         (GET "/play/:track" [track]
+              (str "Play API: track is "track)
+              )
 
-  (POST "/" [] "Create something")
-  (PUT "/" [] "Replace something")
-  (PATCH "/" [] "Modify Something")
-  (DELETE "/" [] "Annihilate something")
-  (OPTIONS "/" [] "Appease something")
-  (HEAD "/" [] "Preview something")
-  (route/not-found "Not Found")
-  )
+         (POST "/" [] "Create something")
+         (PUT "/" [] "Replace something")
+         (PATCH "/" [] "Modify Something")
+         (DELETE "/" [] "Annihilate something")
+         (OPTIONS "/" [] "Appease something")
+         (HEAD "/" [] "Preview something")
+         (route/not-found "Not Found")
+         )
 
-;; (def handler 
-;;   (-> app
-;;       (handler/api) ;; several middleware wrapping functions, including the one to bind params
-;;       ))
+       ;; (def handler 
+       ;;   (-> app
+       ;;       (handler/api) ;; several middleware wrapping functions, including the one to bind params
+       ;;       ))
 
-;; custom middleware
-(defn allow-cross-origin
+       ;; custom middleware
+       (defn allow-cross-origin
   "middleware to allow cross origin"
   [handler]
   (fn [request]
@@ -60,7 +73,7 @@
       (assoc-in response [:headers "Access-Control-Allow-Origin"]
                 "*"))))
 
-(defn set-json-content
+       (defn set-json-content
   "middleware to set media type as application/json"
   [handler]
   (fn [request]
@@ -68,31 +81,31 @@
       (assoc-in response [:headers "Content-Type"]
                 "application/json; charset=utf-8"))))
 
-;; hendler
-(def handler
-  (-> app
-      (wrap-file "resources")
-      wrap-keyword-params
-      wrap-nested-params
-      wrap-params
-      wrap-json-body
-      wrap-json-response
-      ))
+       ;; hendler
+       (def handler
+         (-> app
+             (wrap-file "resources")
+             ;; wrap-keyword-params
+             ;; wrap-nested-params
+             wrap-params
+             wrap-json-body
+             wrap-json-response
+             ))
 
 
-(defonce server (atom nil))
+       (defonce server (atom nil))
 
-(defn stop-server []
-  (when-not (nil? @server)
-    ;; graceful shutdown: wait 100ms
-    ;; timeout is optional; when no timeout, stop immediately
-    (@server :timeout 100)
-    (reset! server nil)))
+       (defn stop-server []
+         (when-not (nil? @server)
+           ;; graceful shutdown: wait 100ms
+           ;; timeout is optional; when no timeout, stop immediately
+           (@server :timeout 100)
+           (reset! server nil)))
 
-(defn -main []
-  ;; The #' is useful when you want to hot-reload code
-  ;; You may want to take a look: https://github.com/clojure/tools.namespace
-  ;; and http://http-kit.org/migration.html#reload
-  ;; (reset! server (run-server #'app {:port 5000})))
-  (reset! server (run-server #'handler {:port 5000})))
-;; (run-server myapp {:port 5000}))
+       (defn -main []
+         ;; The #' is useful when you want to hot-reload code
+         ;; You may want to take a look: https://github.com/clojure/tools.namespace
+         ;; and http://http-kit.org/migration.html#reload
+         ;; (reset! server (run-server #'app {:port 5000})))
+         (reset! server (run-server #'handler {:port 5000})))
+       ;; (run-server myapp {:port 5000}))
