@@ -1,6 +1,6 @@
 (ns moodseer-clj.core
   (:use compojure.core
-        ;; [ring.middleware.json :only (wrap-json-response)]
+        ring.middleware.json
         ;; [ring.middleware.multipart-params]
         selmer.parser
         )
@@ -17,6 +17,7 @@
 ;; (defroutes myapp
 ;;   (GET "/" [] "Hello World"))
 (defroutes app
+  (GET "/gort" req {:this "this" :that "other"})
   (GET "/" req "Do something with req")
   (GET "/player" req (render-file "player.html" {:moodseer-title "Moodseer New Horizons" :moodseer-announce "THIS IS MY H1"}))
   (GET ["/file/:name.:ext" :name #".*", :ext #".*"] [name ext]
@@ -39,18 +40,41 @@
   (PATCH "/" [] "Modify Something")
   (DELETE "/" [] "Annihilate something")
   (OPTIONS "/" [] "Appease something")
-  (HEAD "/" [] "Preview something"))
+  (HEAD "/" [] "Preview something")
+  (route/not-found "Not Found")
+  )
 
 ;; (def handler 
 ;;   (-> app
 ;;       (handler/api) ;; several middleware wrapping functions, including the one to bind params
 ;;       ))
 
+;; custom middleware
+(defn allow-cross-origin
+  "middleware to allow cross origin"
+  [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (assoc-in response [:headers "Access-Control-Allow-Origin"]
+                "*"))))
+
+(defn set-json-content
+  "middleware to set media type as application/json"
+  [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (assoc-in response [:headers "Content-Type"]
+                "application/json; charset=utf-8"))))
+
+;; hendler
 (def handler
   (-> app
       wrap-keyword-params
       wrap-nested-params
-      wrap-params))
+      wrap-params
+      wrap-json-body
+      wrap-json-response
+      ))
 
 
 (defonce server (atom nil))
